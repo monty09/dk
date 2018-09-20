@@ -1,6 +1,9 @@
 rm(list=ls())
 functions <- list()
-setwd('C:/Users/MonticT/Documents/AnalysisProjects/Fantasy/')
+project_location <- paste0("/AnalysisProjects/DraftKings/")
+working_directory <- paste0(file.path(Sys.getenv("USERPROFILE"),"Documents"),project_location)
+setwd(working_directory)
+print(getwd())
 
 functions$packages <- function(){
   Sys.setenv(TZ = "America/New_York")
@@ -18,7 +21,7 @@ functions$packages <- function(){
 }
 functions$packages()
 
-dk.14 <- read_csv(file = 'C:/Users/MonticT/Documents/AnalysisProjects/Fantasy/dk_csv/ByYear/dk_2014.csv'
+dk.14 <- read_csv(file = './Data/dk_csv/ByYear/dk_2014.csv'
                   ,col_types = cols(.default = "c"))
 
 

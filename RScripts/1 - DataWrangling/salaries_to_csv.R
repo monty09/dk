@@ -18,8 +18,20 @@ functions$packages <- function(){
 }
 functions$packages()
 
-
+##UPDATE YOU LOCAL REPOSITORY FROM GITHUB
+#Git UPDATE git pull --rebase https://github.com/monty09/dk.git master
+#Push files to update master
+#git push https://github.com/monty09/dk.git master
+#
+#GIT MERGE
+# git Branch
+# git checkout master
+# git fetch upstream *IF doesnt work |||||| git remote add upstream  git@github.com:upstream_clone_repo_url/xyz.git
+# git fetch upstream
+# git merge upstream/master
+# git remote -v
 #Convert text file 
+
 dk_txt_files <- list.files(path = "./DK-Salaries/",full.names = T)
 lapply(dk_txt_files,function(file){
   x <- read.csv(file = file,sep = ";")
