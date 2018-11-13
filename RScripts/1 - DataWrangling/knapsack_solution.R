@@ -1,15 +1,29 @@
+rm(list=ls())
+functions <- list()
+project_location <- paste0("/AnalysisProjects/DraftKings/")
+working_directory <- paste0(file.path(Sys.getenv("USERPROFILE"),"Documents"),project_location)
+setwd(working_directory)
+print(getwd())
 
+functions$packages <- function(){
+  Sys.setenv(TZ = "America/New_York")
+  #Sys.setenv(JAVA_HOME='C:\\Program Files (x86)\\Java\\jre1.8.0_181')
+  Sys.setenv(JAVA_HOME='C:\\Program Files\\Java\\jre1.8.0_181')
+  
+  
+  
+  package_names <- c('caret','mlbench','glmnet','h2o','modelr','tidyverse','rJava','xlsx',"readxl","devtools", "futile.logger", "DBI", "RMySQL", "uuid", "readr", "caret", "gbm", "rpart", "randomForest", "stringdist", "tm", "curl", "stringr", "jsonlite", "purrr", "dplyr", "tidyr", "fastmatch")
+  ok = sapply(package_names,
+              FUN = function (package_name) {
+                suppressMessages(require(package_name, character.only=TRUE, quietly = T, warn.conflicts = F))
+              })
+  
+}
+functions$packages()
 
-library(lpSolveAPI)
+packages <- c('lpSolveAPI','lpSolve','FLSSS','adagio','ompr','ompr.roi','ROI','ROI.plugin.glpk')
 library(lpSolve)
-library(FLSSS)
-library(adagio)
-library(ompr)
-library(ompr.roi)
-library(ROI)
-library(ROI.plugin.glpk)
 
-library(lpSolve)
 find_teams <- function(train, cap = 50000, constraint = "none", league = "DraftKings", setplayers = NULL,removeplayers = NULL, removeteams = NULL) {
 
   colnames(train) <- c("GID", "Name", "Pos", "Team","Week", "Pts", "Salary")
@@ -133,23 +147,16 @@ independent_teams <- function(train){
 }
 
 
-
-
-dk_files <- list.files(path = 'C:/Users/MonticT/Documents/AnalysisProjects/DraftKings/Data/dk_csv/ByYear/',full.names = T)
+dk_files <- list.files(path = './Data/dk_csv/ByYear/',full.names = T)
 dk.14 <- read_csv(file = dk_files[1],col_types = cols(.default = "c"))
 dk.15 <- read_csv(file = dk_files[2],col_types = cols(.default = "c"))
 dk.16 <- read_csv(file = dk_files[3],col_types = cols(.default = "c"))
 dk.17 <- read_csv(file = dk_files[4],col_types = cols(.default = "c"))
 
-colnames(train) <- c("GID", "Name", "Pos", "Team","Week", "Pts", "Salary")
 dk.14 <- dk.14 %>% select(GID,Name,Pos,Team,Week,DK.points,DK.salary) %>% rename(Pts="DK.points",Salary="DK.salary")
 dk.15 <- dk.15 %>% select(GID,Name,Pos,Team,Week,DK.points,DK.salary) %>% rename(Pts="DK.points",Salary="DK.salary")
 dk.16 <- dk.16 %>% select(GID,Name,Pos,Team,Week,DK.points,DK.salary) %>% rename(Pts="DK.points",Salary="DK.salary")
 dk.17 <- dk.17 %>% select(GID,Name,Pos,Team,Week,DK.points,DK.salary) %>% rename(Pts="DK.points",Salary="DK.salary")
-
-train <- dk.14 %>% filter(Week==1)
-top_teams(train,5)
-independent_teams(train)
 
 
 best14 <- lapply(unique(dk.14$Week),function(week){
